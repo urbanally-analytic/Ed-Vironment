@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+  <title>Ed-vironment</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+<style>
+    body { 
+      margin: 0; 
+      padding: 0;
+      font-family: THSarabunNew,sans-serif; 
+      font-size: 14px;
+      font-style: normal;
+     
+  }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  li{
+    padding: 3px 0;
+  }
+  #panel{
+    background:#292828;
+    width: 300px; 
+    border:1px solid rgba(0,0,0,0.05);
+    position:absolute;
+    left:16px;
+    top:16px;
+    box-shadow:0 0 10px 0 rgba(0,0,0,0.1);
+    color:rgba(0,0,0,0.5);
+  }
+  h1{
+    text-transform:capitalize;
+    margin: 0;
+    padding: 16px; 
+    font-size: 20px;
+    color: white;
+    border-bottom: 0.5px solid #C4C2C2 ;
+  }
+  h2{
+    text-transform:capitalize;
+    margin: 0;
+    padding: 16px; 
+    font-size: 14px;
+    color: white;
+    border-bottom: 0.5px solid #C4C2C2 ;
+}
+  h3{
+    text-transform:capitalize;
+    margin: 0;
+    padding: 16px; 
+    font-size: 14px;
+    color: white;
+  }
+  h4{
+    text-transform:capitalize;
+    margin: 0;
+    padding: 16px; 
+    font-size: 14px;
+    color: white;
+}
+  p{
+    text-transform:capitalize;
+    text-align: justify;
+    font-style:normal;
+    font-weight:100;
+    margin: 0;
+    padding: 0px; 
+    font-size: 12px;
+    color: white;
+  }
+  ul{
+    list-style-type:none;
+    font-weight:100;
+    margin:0;
+    padding: 5px; 
+    color: white;
+  }
+  ul span {
+    width:15px;
+    height:15px;
+    display:inline-block;
+    margin-right:8px;
+    border-radius:50%;
+  }
+  dd{
+      margin-left: 0;
+      margin-bottom: 5px;
+      font-weight:100,bold;
+      font-size: 12px;
+      color: #292828;
+    
+  }
+  .mapboxgl-popup-content{
+    font-size: 14px;
+    background :#C4C2C2;
+    font-weight: bold;
+    min-width: 250px;
+    max-width: 300px;
+    box-shadow:0 0 4px 0 rgba(0,0,0,0.1); 
+    border-radius:3%;
+    color: #292828;
+  }
+dl {
+    margin-bottom: 0;
+
+}
+  </style>
+</head>
+<body>
+  
+<div id='map'></div>
+
+<!-- Panel -->
+  <div id="panel" style="">
+
+    <h1>Ed-vironment
+        <p> Ed-Vironment is a database that collects and displays potential spaces and venues around 
+            Bangkok that can be integrated into lesson plans for outdoor learning. The goal is to 
+            allow for teachers, parents and educators to easily search and locate spaces and venues in 
+            their neighbourhood and beyond. Ed-Vironment allows for the continuity in children's 
+            learning during the period when school-based activities are interrupted.</p>
+    </h1>
+
+<!-- Ed-Theme -->
+        <h2>Finding Outdoor Learning Space
+        <p>Location & Facilities for outdoor learning</p>
+        <ul>
+            <li><span style="background:#292828; border: 1px solid white; box-sizing:border-box;"></span>School</li>
+            <li><span style="background:#00FF67;"></span>Public Park</li>
+            <li><span style="background:#EDFF00;"></span>Playground</li>
+            <li><span style="background:#FF6700;"></span>Sport Field</li>
+            <li><span style="background:#00F4D6;"></span>Learning Space</li>
+          </ul>
+        </h2>
+
+        <h2>Explore on Eco-system
+            <p> Nature-based Activities</p>
+        <ul>
+            <li><span style="background:#D3FFA4;"></span>Animals</li>
+            <li><span style="background:#83996A;"></span>Plants</li>
+        </ul>
+        </h2>
+
+        <h2> Explore on Shape & Texture
+            <p> Sensory-based Activities</p>
+        <ul>
+            <li><span style="background:#F9CDF9;"></span>Water</li>
+            <li><span style="background:#FF94FA;"></span>Rocks</li>
+            <li><span style="background:#FF00FF;"></span>Grass</li>
+        </ul>
+        </h2>
+
+        <h2>Explore on Public Playspace
+            <p> Play-based Activities</p>
+        <ul>
+            <li><span style="background:#FDFFA6;"></span>Playground in public park</li>
+        </ul>
+         </h2>
+
+        <h2>Explore on Sport & Activities
+            <p> Physical Activities</p>
+        <ul>
+            <li><span style="background:#FCAB75;"></span>Sport & Activities</li>
+        </ul>
+        </h2>
+
+        <h2>Explore in Neighborhood
+            <p> Place-based Activities</p>
+        <ul>
+            <li><span style="background:#8DFFFC;"></span>Surrounding</li>
+        </ul>
+        </h2>
+
+        <ul><p>Ed-Vironment (Beta Version) is a research 
+                project led by Donlaporn Chanachai and 
+                Nuttaporn Jomhong with Chanatip Buranavichit 
+                and Koshaporn Wongsawanichakorn as research 
+                assistants. The project is under the supervision 
+                of Data Thinking Lab - Urban Ally, Silpakorn University.</p></ul>
+
+  </div>
+
+
+<script>
+   //
+   var ZoneNames = {
+        'Inner Bkk': 'เขตกรุงเทพฯ ชั้นใน',
+        'Middle Bkk' : 'เขตกรุงเทพฯ ชั้นกลาง',
+        'Outer Bkk' : 'เขตกรุงเทพฯ ชั้นนอก'
+   
+    };
+
+    // <h1></h1>
+	mapboxgl.accessToken = 'pk.eyJ1IjoibnV0dGFwb3JuaiIsImEiOiJjazBjamFxbjQwMGd0M21vN200OTF1Mm5xIn0.1EoqPenXYc9Ruu1FhS4iKA';
+    var map = new mapboxgl.Map
+    ({
+        container: 'map', 
+        style: 'mapbox://styles/nuttapornj/cl0i566zn000814n7aiac5at1', // style URL
+        center: [100.600794, 13.738426], 
+        zoom: 10,
+        minzoom: 10,
+        maxzoom: 20,
+        hash: false
+    });
+
+
+    // 
+    var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'top-right');
+
+    map.on('mousemove',function(event) {
+
+        if (map.loaded()) {
+            var features = map.queryRenderedFeatures(event.point, {
+                layers: ['sum theme']
+            });
+            map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+        }
+    });
+
+// Map On -->
+
+    map.on('click', function(event) {
+
+        var geometry = event.point;
+        var parameters = {
+            layers: ['sum theme']
+        
+        };
+
+
+
+     // Map Query -->
+
+        var features = map.queryRenderedFeatures(geometry, parameters);
+
+        var lot = features[0];
+        console.log(lot);
+        
+        if (features.length) {
+            var Group = lot.properties.Group || '-';
+            var Name = lot.properties.name || '-';
+            var Description = lot.properties.descriptio || '-';
+            var Location = lot.properties.location || '-';
+            var Opening = lot.properties.open_close || '-';
+            var Facilities = lot.properties.facility || '-';
+            var Activities = lot.properties.ActiveAct || '-';
+            var URL = lot.properties.URL || '-';
+            var Source = lot.properties.source || '-';
+
+            console.log(Group, Name,Description,Location,Opening,Facilities,Activities,URL,Source);
+
+            var popup = new mapboxgl.Popup();
+            popup.setLngLat(event.lngLat);
+            popup.setHTML('<dl>'+
+                '<dt = style="background:white;"> Group </dt>' +
+                '<dd = style="background:white;">' + Group + '</dd>' +
+                '<dt>Name</dt>' +
+                '<dd>' + Name + '</dd>' +
+                '<dt>Description</dt>' +
+                '<dd>' + Description + '</dd>' +
+                '<dt>Location</dt>' +
+                '<dd>' + Location + '</dd>' +
+                '<dt>Opening</dt>' +
+                '<dd>' + Opening + '</dd>' +
+                '<dt>Facilities</dt>' +
+                '<dd>' + Facilities + '</dd>' +
+                '<dt>Activities</dt>' +
+                '<dd>' + Activities + '</dd>' +
+                '<dt>URL</dt>' +
+                '<dd>' + URL + '</dd>' +
+                '<dt>Source</dt>' +
+                '<dd>' + Source + '</dd>' +
+            '</dl>')
+            popup.addTo(map);
+            };
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+</script>
+
+</body>
+</html>
